@@ -19,5 +19,6 @@ body {
 
   h1, h2, h3 {
     margin: 0;
+    text-shadow: 5px 4px 4px rgba(255,255,255,0.7);
   }
 `

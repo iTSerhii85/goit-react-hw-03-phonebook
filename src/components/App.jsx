@@ -1,22 +1,50 @@
 import React from "react"
 import { GlobalStyle } from "./GlobalStyle";
 import { Layout } from "./Layout";
+import initialContacts from "../contacts.json"
 
 import { BookForm } from "./BookForm/BookForm";
 import { ContactList } from "./ContactList/ContactList";
-import { Wrapper } from "./BookForm/BookForm.style";
 import { ContactListItem } from "./ContactList/ContactListItem";
 import { Filter } from "./Filter/Filter";
+import Modal from "./Modal/Modal";
+import { NewContButton } from "./ContactList/ContactList.style";
+import { CloseModalButton } from "./Modal/Modal.style";
 
 export class App extends React.Component {
   state = {
-    contacts: [
-      {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-      {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-      {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-      {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'}
-    ],
+    contacts: [],
     filter: '',
+    showModal: false,
+  };
+
+  componentDidMount() {
+    (localStorage.getItem('contacts') !== null)
+    ? this.setState ({ contacts: JSON.parse(localStorage.getItem('contacts'))})
+    : this.setState({ contacts: initialContacts });
+
+    // const savedContacts = localStorage.getItem('contacts');
+    //     if (savedContacts !== null){
+    //   const parsedContacts = JSON.parse(savedContacts);
+    //   this.setState ({ contacts: parsedContacts});
+    //   return;
+    // }
+    //  this.setState({ contacts: initialContacts });
+  };
+
+  componentDidUpdate(_, prevState) {
+    (prevState.contacts !== this.state.contacts)
+    && localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+
+    // if (prevState.contacts !== this.state.contacts){
+    //   localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+    // }
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
   };
   
   addContact = newContact => {
@@ -26,6 +54,7 @@ export class App extends React.Component {
     } 
     else {
       this.setState(prevState => {return {contacts: [...prevState.contacts, newContact]}});
+      this.toggleModal();
     }
   };
 
@@ -51,10 +80,15 @@ export class App extends React.Component {
     return (
       <Layout>
       <GlobalStyle/>
-        <h1>Phonebook</h1>
-        <Wrapper>
+      {this.state.showModal &&
+        <Modal onClose={this.toggleModal}>
+          <CloseModalButton type="button" onClick={this.toggleModal}>X</CloseModalButton>
           <BookForm onAddContact={this.addContact}/>
+        </Modal>}
+        <h1>Phonebook</h1>
           <ContactList>
+            <NewContButton type="button" onClick={this.toggleModal}>New contact</NewContButton>
+            <h2>Contacts</h2>
             <Filter 
               value={this.state.filter} 
               onChange={this.changeFilter}
@@ -63,7 +97,6 @@ export class App extends React.Component {
               contacts={filteredContacts} 
               onDelete={this.deleteContact}/>
           </ContactList>
-        </Wrapper>
       </Layout>
     );
   }

@@ -30,11 +30,6 @@ flex-direction: column;
 gap: 5px;
 `;
 
-export const Wrapper = styled.div`
-display: flex;
-gap: 20px;
-`;
-
 export const SubmitButton = styled.button`
 display: block;
  width: 50%;
