@@ -8,9 +8,23 @@ flex-direction: column;
 gap: 16px;
 padding: 30px;
 width: 500px;
-height: 300px;
+height: 370px;
 overflow-y: scroll;
-/* padding: 10px; */
+
+&::-webkit-scrollbar {
+  width: 7px;
+}
+
+&::-webkit-scrollbar-track {
+  box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: #f9f9fd;
+  border-radius: 10px;
+}
+
+&::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #00c6fb, #005bea);
+}
 `;
 
 export const Item = styled.li`
@@ -40,9 +54,6 @@ cursor: pointer;
 
 export const DeleteButton = styled.button`
 display: block;
- /* width: 50%; */
- /* margin-left: auto;
- margin-right: auto; */
  font-size: 18px;
  display: inline-block;
  outline: 0;
