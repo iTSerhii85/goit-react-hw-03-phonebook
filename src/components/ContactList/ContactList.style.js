@@ -6,8 +6,11 @@ list-style: none;
 display: flex;
 flex-direction: column;
 gap: 16px;
-padding: 10px;
+padding: 30px;
 width: 500px;
+height: 300px;
+overflow-y: scroll;
+/* padding: 10px; */
 `;
 
 export const Item = styled.li`
